@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Campaign;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Models\Campaign;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class EditCampaignController extends Controller
+class EditCampaignController extends BaseController
 {
+    use AuthorizesRequests;
+
     public function __invoke(Campaign $campaign): View
     {
-        Gate::authorize('update', $campaign);
+        $this->authorize('update', $campaign);
 
-        // Eager loading relacji, żeby uniknąć problemu N+1 w widoku
-        $campaign->load('configuration');
-
-        return view('campaigns.edit', compact('campaign'));
+        return view('campaigns.edit', ['campaign' => $campaign->load('configuration')]);
     }
 }

@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Campaign;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Models\Campaign;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class CampaignConfigurationController extends Controller
+class CampaignConfigurationController extends BaseController
 {
     use AuthorizesRequests;
-    
+
     public function __invoke(Campaign $campaign): View
     {
         $this->authorize('view', $campaign);
-        
-        return view('campaigns.show', compact('campaign'));
+
+        $campaign->load('configuration');
+
+        return view('campaigns.configuration', compact('campaign'));
     }
 }
