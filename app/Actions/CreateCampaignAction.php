@@ -9,18 +9,11 @@ class CreateCampaignAction
 {
     public function execute(array $data): Campaign
     {
-        // Tworzymy kampanię ze statusem roboczym (draft)
-        $campaign = Campaign::create([
+        return Campaign::create([
+            'user_id' => auth()->id(),
             'name' => $data['name'],
-            'target_audience' => $data['target_audience'],
-            'channel' => $data['channel'],
-            'brief' => $data['brief'],
+            'description' => $data['description'],
             'status' => 'draft',
         ]);
-
-        // Wrzucamy ciężkie zapytanie do AI na kolejkę
-        ProcessCampaignAiGeneration::dispatch($campaign);
-
-        return $campaign;
     }
 }

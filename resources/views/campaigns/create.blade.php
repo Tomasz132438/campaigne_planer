@@ -1,50 +1,46 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             {{ __('Kreator Nowej Kampanii AI') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100 p-6">
-                
+            <div class="bg-black overflow-hidden shadow-sm sm:rounded-lg border border-slate-700 p-6">
+
+
+            <!-- BŁĘDY WALIDACJI -->
+                @if ($errors->any())
+                    <div class="mb-6 p-4 bg-red-500/10 border border-red-500/50 rounded-xl text-sm text-red-400">
+                        <p class="font-medium">Formularz zawiera błędy:</p>
+                        <ul class="mt-2 list-disc list-inside opacity-90">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
                 <form action="{{ route('campaigns.store') }}" method="POST" class="space-y-6">
                     @csrf
 
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700">Nazwa kampanii</label>
-                        <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('name') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        <label for="name" class="block text-sm font-medium text-slate-300">Nazwa kampanii</label>
+                        <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md border-slate-700 bg-slate-950/50 text-slate-300 placeholder:text-slate-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Nazwij swoją kampanię...">
+                        @error('name') <p class="mt-1 text-sm text-red-600">{{ 'Musisz nazwać swoją kampanie' }}</p> @enderror
                     </div>
 
                     <div>
-                        <label for="channel" class="block text-sm font-medium text-gray-700">Kanał docelowy</label>
-                        <select name="channel" id="channel" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="Facebook">Facebook</option>
-                            <option value="Instagram">Instagram</option>
-                            <option value="LinkedIn">LinkedIn</option>
-                            <option value="Email">Newsletter / Email</option>
-                        </select>
-                        @error('channel') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label for="target_audience" class="block text-sm font-medium text-gray-700">Grupa docelowa</label>
-                        <input type="text" name="target_audience" id="target_audience" value="{{ old('target_audience') }}" placeholder="np. Właściciele małych firm, 30-45 lat, Polska" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                        @error('target_audience') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div>
-                        <label for="brief" class="block text-sm font-medium text-gray-700">Brief / Wytyczne dla AI</label>
-                        <textarea name="brief" id="brief" rows="4" placeholder="Opisz produkt, kluczowe cechy i ton wypowiedzi..." class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">{{ old('brief') }}</textarea>
-                        @error('brief') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
+                        <label for="description" class="block text-sm font-medium text-slate-300">Opis kampanii</label>
+                        <textarea name="description" id="description" rows="4" placeholder="Opisz kampanię..." class="mt-1 block w-full reounded-md border-slate-700 bg-slate-950/50 text-slate-300 placeholder:text-slate-500 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">{{ old('description') }}</textarea>
+                        @error('description') <p class="mt-1 text-sm text-red-600">{{ 'Opisz krótko swoją kampanię' }}</p> @enderror
                     </div>
 
                     <div class="flex justify-end space-x-3">
-                        <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Anuluj</a>
+                        <a href="{{ route('dashboard') }}" class="inline-flex items-center px-4 py-2 border border-slate-600 rounded-md text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-600">Anuluj</a>
                         <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 shadow-sm">
-                            Uruchom Generowanie AI
+                            Stwórz kampanie
                         </button>
                     </div>
                 </form>

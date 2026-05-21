@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CampaignAI Planner - Automatyzacja Marketingu przez AI</title>
+    <title>CampAIgn - Automatyzacja Marketingu przez AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-900 text-white font-sans antialiased selection:bg-indigo-500 selection:text-white">
@@ -11,7 +11,7 @@
     <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between border-b border-slate-800">
         <div class="flex items-center space-x-2">
             <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                CampaignAI
+                CampAIgn
             </span>
         </div>
         

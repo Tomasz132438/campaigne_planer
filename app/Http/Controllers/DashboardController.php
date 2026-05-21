@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function __invoke(Request $request): View
     {
-        // Sprawdzamy czy użytkownik jest zalogowany (jeśli jeszcze nie masz auth, użyj Campaign::...)
+        // Sprawdzamy czy użytkownik jest zalogowany
         $query = $request->user() ? $request->user()->campaigns() : Campaign::query();
 
         $campaigns = $query->latest()->paginate(5);
@@ -21,7 +21,6 @@ class DashboardController extends Controller
             'drafts' => (clone $query)->where('status', 'draft')->count(),
         ];
 
-        // POPRAWKA: 'stats' jako string w compact()
         return view('dashboard', compact('campaigns', 'stats'));
     }
 }
