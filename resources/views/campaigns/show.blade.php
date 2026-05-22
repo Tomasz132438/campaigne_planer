@@ -2,49 +2,55 @@
     <x-slot:title>
         Podgląd kampanii: {{ $campaign->name }}
     </x-slot:title>
+    {{-- Komunikat sukcesu --}}
+    @if (session('success'))
+        <div class="mb-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-4 text-emerald-400 text-sm font-medium">
+            {{ session('success') }}
+        </div>
+    @endif
 
+    {{-- Komunikat błędu --}}
+    @if (session('error'))
+        <div class="mb-6 rounded-lg bg-red-500/10 border border-red-500/20 p-4 text-red-400 text-sm font-medium">
+            {{ session('error') }}
+        </div>
+    @endif
+    
     <div class="flex min-h-screen bg-slate-950 text-slate-100">
         <main class="flex-1 p-8 overflow-y-auto">
             <div class="max-w-4xl mx-auto">
                 
                 {{-- Nagłówek i Status --}}
-                <div class="flex items-center justify-between mb-8 pb-6 border-b border-slate-800">
-                    <div>
-                        <div class="flex items-center space-x-3">
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-start mb-8 pb-6 border-b border-slate-800">
+                    <!-- Kolumna lewa: Tytuł i opis (Zajmuje 2 z 3 kolumn na desktopie) -->
+                    <div class="md:col-span-2 space-y-3 min-w-0">
+                        <div class="flex flex-wrap items-center gap-3">
                             <h1 class="text-2xl font-bold tracking-tight text-white break-words">{{ $campaign->name }}</h1>
-                            <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
                                 Aktywna Konfiguracja
                             </span>
                         </div>
 
-                        <div class="flex items-center space-x-3">
-                            <p class="mt-3 max-w-3xl text-base leading-relaxed text-slate-200 whitespace-pre-line break-words">{{ $campaign->description }}</p>
+                        <div>
+                            <p class="max-w-3xl text-base leading-relaxed text-slate-200 whitespace-pre-line break-words">{{ $campaign->description }}</p>
                         </div>
 
-                        <p class="text-sm text-slate-400 mt-1">Parametry operacyjne i strategia AI</p>
+                        <p class="text-sm text-slate-400">Parametry operacyjne i strategia AI</p>
                     </div>
-                    <div class="flex space-x-3">
-                        <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-xl text-sm font-medium transition">
+
+                    <!-- Kolumna prawa: Grupa przycisków akcji (Wyrównana do prawej na desktopie, responsywna) -->
+                    <div class="flex flex-wrap items-center gap-3 md:justify-end shrink-0">
+                        <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-xl text-sm font-medium text-slate-200 transition">
                             Powrót do pulpitu
                         </a>
-                    </div>
 
-                    @can('update', $campaign)
-                        <div class="flex items-center gap-x-3 border-b border-slate-800 pb-5 mb-6 justify-end">
+                        @can('update', $campaign)
                             {{-- Przycisk Edycji Podstawowej --}}
-                            <a 
-                                href="{{ route('campaigns.edit', $campaign) }}" 
-                                class="rounded-lg bg-slate-800 px-3.5 py-2 text-sm font-semibold text-slate-200 shadow-sm hover:bg-slate-700 border border-slate-700 transition"
-                            >
-                                Edytuj kampanię
-                            </a>
-
-                            {{-- Przycisk Edycji Konfiguracji --}}
                             <a 
                                 href="{{ route('campaigns.edit', $campaign) }}" 
                                 class="rounded-lg bg-indigo-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition"
                             >
-                                Konfiguruj szczegóły
+                                Edytuj kampanię
                             </a>
 
                             {{-- Bezpieczny Formularz Usuwania --}}
@@ -63,9 +69,8 @@
                                     Usuń
                                 </button>
                             </form>
-                        </div>
-                    @endcan
-
+                        @endcan
+                    </div>
                 </div>
 
                 {{-- Sekcja 1: Dane Finansowo-Czasowe (z tabeli campaigns) --}}
@@ -76,11 +81,11 @@
                     </div>
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                         <span class="text-xs font-semibold text-slate-400 block uppercase tracking-wider">Data rozpoczęcia</span>
-                        <span class="text-xl font-bold text-white mt-1 block">{{ $campaign->configuration->start_date }}</span>
+                        <span class="text-xl font-bold text-white mt-1 block">{{ \Carbon\Carbon::parse($campaign->configuration->start_date)->format('d.m.Y') }}</span>
                     </div>
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                         <span class="text-xs font-semibold text-slate-400 block uppercase tracking-wider">Data zakończenia</span>
-                        <span class="text-xl font-bold text-white mt-1 block">{{ $campaign->configuration->end_date }}</span>
+                        <span class="text-xl font-bold text-white mt-1 block">{{ \Carbon\Carbon::parse($campaign->configuration->end_date)->format('d.m.Y') }}</span>
                     </div>
                 </div>
 
@@ -118,9 +123,9 @@
                         <div>
                             <span class="text-xs font-bold text-indigo-400 uppercase tracking-wider">Zasięg geograficzny</span>
                             <p class="text-sm text-slate-300 mt-1 break-words">
-                                <span class="uppercase font-semibold text-xs bg-slate-950 px-2 py-1 rounded border border-slate-800 mr-2">
+                                <!-- <span class="uppercase font-semibold text-xs bg-slate-950 px-2 py-1 rounded border border-slate-800 mr-2">
                                     {{ $campaign->configuration->geo_scope }}
-                                </span>
+                                </span> -->
                                 {{ $campaign->configuration->geo_details ?? 'Brak dodatkowych szczegółów' }}
                             </p>
                         </div>

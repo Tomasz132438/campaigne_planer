@@ -7,7 +7,7 @@ namespace App\Actions\Campaign;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\DB;
 
-class UpdateCampaignAction
+class UpdateCampaignConfigAction
 {
     public function execute(Campaign $campaign, array $data): void
     {

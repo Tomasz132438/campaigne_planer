@@ -81,59 +81,59 @@
                 <div class="overflow-x-auto">
 
                 <!-- Struktura tabeli -->
-<div class="w-full text-sm text-left text-slate-300">
-    <!-- Nagłówek "tabeli" -->
-    <div class="grid grid-cols-[2fr_1fr_1fr_auto] gap-4 px-6 py-3 border-b border-slate-700 bg-slate-900/50 font-semibold text-slate-200">
-        <div>Nazwa kampanii</div>
-        <div>Kanał</div>
-        <div>Status</div>
-        <div class="text-right min-w-[120px]">Utworzono</div>
-    </div>
+                <div class="w-full text-sm text-left text-slate-300">
+                    <!-- Nagłówek "tabeli" -->
+                    <div class="grid grid-cols-[2fr_1fr_1fr_auto] gap-4 px-6 py-3 border-b border-slate-700 bg-slate-900/50 font-semibold text-slate-200">
+                        <div>Nazwa kampanii</div>
+                        <div>Kanał</div>
+                        <div>Status</div>
+                        <div class="text-right min-w-[120px]">Utworzono</div>
+                    </div>
 
-    <!-- Wiersze jako klikalne linki -->
-    <div class="divide-y divide-slate-800">
-        @foreach($campaigns as $campaign)
-            <a href="{{ route('campaigns.show', $campaign) }}" class="grid grid-cols-[2fr_1fr_1fr_auto] gap-4 px-6 py-4 items-center hover:bg-slate-800/40 transition-colors duration-200 block">
-                <!-- Kolumna 1: Nazwa -->
-                <div class="font-semibold text-slate-200 truncate pr-4">
-                    {{ $campaign->name }}
+                    <!-- Wiersze jako klikalne linki -->
+                    <div class="divide-y divide-slate-800">
+                        @foreach($campaigns as $campaign)
+                            <a href="{{ route('campaigns.show', $campaign) }}" class="grid grid-cols-[2fr_1fr_1fr_auto] gap-4 px-6 py-4 items-center hover:bg-slate-800/40 transition-colors duration-200 block">
+                                <!-- Kolumna 1: Nazwa -->
+                                <div class="font-semibold text-slate-200 truncate pr-4">
+                                    {{ $campaign->name }}
+                                </div>
+                                
+                                <!-- Kolumna 2: Kanał -->
+                                <div class="truncate">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700/50">
+                                        {{ $campaign->channel ?? 'Brak' }}
+                                    </span>
+                                </div>
+                                
+                                <!-- Kolumna 3: Status -->
+                                <div>
+                                    @if($campaign->status === 'active')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400"></span>
+                                            Gotowa (AI)
+                                        </span>
+                                    @elseif($campaign->status === 'failed')
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-rose-400"></span>
+                                            Błąd API
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-pulse">
+                                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-400"></span>
+                                            Generowanie...
+                                        </span>
+                                    @endif
+                                </div>
+                                
+                                <!-- Kolumna 4: Data (Zablokowana szerokość dla wyrównania) -->
+                                <div class="text-right text-slate-400 font-mono text-xs min-w-[120px]">
+                                    {{ $campaign->created_at->format('Y-m-d H:i') }}
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
-                
-                <!-- Kolumna 2: Kanał -->
-                <div class="truncate">
-                    <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700/50">
-                        {{ $campaign->channel ?? 'Brak' }}
-                    </span>
-                </div>
-                
-                <!-- Kolumna 3: Status -->
-                <div>
-                    @if($campaign->status === 'active')
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400"></span>
-                            Gotowa (AI)
-                        </span>
-                    @elseif($campaign->status === 'failed')
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-rose-400"></span>
-                            Błąd API
-                        </span>
-                    @else
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-pulse">
-                            <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-400"></span>
-                            Generowanie...
-                        </span>
-                    @endif
-                </div>
-                
-                <!-- Kolumna 4: Data (Zablokowana szerokość dla wyrównania) -->
-                <div class="text-right text-slate-400 font-mono text-xs min-w-[120px]">
-                    {{ $campaign->created_at->format('Y-m-d H:i') }}
-                </div>
-            </a>
-        @endforeach
-    </div>
-</div>
         
                 </div>
 

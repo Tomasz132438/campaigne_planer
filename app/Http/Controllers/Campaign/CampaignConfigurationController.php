@@ -19,6 +19,9 @@ class CampaignConfigurationController extends BaseController
 
         $campaign->load('configuration');
 
-        return view('campaigns.configuration', compact('campaign'));
+        $configuration = $campaign->configuration;
+
+
+        return view('campaigns.configuration', compact('campaign', 'configuration'));
     }
 }

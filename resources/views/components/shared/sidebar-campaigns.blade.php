@@ -23,15 +23,7 @@
         <p class="px-4 text-xxs font-semibold uppercase tracking-wider text-slate-500">Ostatnie Kampanie</p>
         <div class="mt-2 space-y-1 px-2">
             @foreach($campaigns as $campaign)
-                
-                {{-- Dynamiczny dobór trasy w zależności od stanu konfiguracji --}}
-                @php
-                    $route = $campaign->isConfigured() 
-                        ? route('campaigns.edit', $campaign->id) 
-                        : route('campaigns.show', $campaign);
-                @endphp
-
-                <a href="{{ $route }}" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800/40 hover:text-slate-200 transition group">
+                <a href="{{ route('campaigns.show', $campaign) }}" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm text-slate-400 hover:bg-slate-800/40 hover:text-slate-200 transition group">
                     <span class="truncate pr-2 font-medium">{{ $campaign->name }}</span>
                     
                     {{-- Subtelna kropka statusu wyliczana na podstawie flagi konfiguracji lub statusu przetwarzania --}}

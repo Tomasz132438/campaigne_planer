@@ -28,7 +28,7 @@ class SidebarCampaigns extends Component
         elseif (Auth::user()->campaigns()->count() === 0) {
             return '';
         }
-        $campaigns = Auth::user()->campaigns()->latest()->take(5)->get();
+        $campaigns = Auth::user()->campaigns()->latest()->paginate(8);
         return view('components.shared.sidebar-campaigns', compact('campaigns'));
     }
 }

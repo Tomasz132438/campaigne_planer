@@ -18,6 +18,21 @@
                         </div>
                         <p class="text-sm text-slate-400 mt-1">Skonfiguruj swoją kampanię</p>
                     </div>
+                    <form 
+                                action="{{ route('campaigns.destroy', $campaign) }}" 
+                                method="POST" 
+                                onsubmit="return confirm('Czy na pewno chcesz bezpowrotnie usunąć tę kampanię wraz z jej konfiguracją?');"
+                                class="inline"
+                            >
+                                @csrf
+                                @method('DELETE')
+                                <button 
+                                    type="submit" 
+                                    class="rounded-lg bg-red-600/10 px-3.5 py-2 text-sm font-semibold text-red-400 shadow-sm hover:bg-red-600 hover:text-white border border-red-500/20 transition"
+                                >
+                                    Usuń
+                                </button>
+                    </form>
                 </div>
 
                 {{-- Alert z błędami walidacji --}}
@@ -126,27 +141,13 @@
                             <input type="number" name="budget" id="budget" 
                                     step="0.01" min="1"
                                    value="{{ old('budget', $campaign->budget ?? '') }}" 
-                                   class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition text-sm"
+                                   class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition text-sm [appearance:textfield] &::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                    placeholder="0.00 PLN"
                                    required>
                         </div>
 
                         {{-- Input 8: Obszar działania --}}
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label for="geo_scope" class="block text-sm font-semibold text-slate-200 mb-2">Zasięg geograficzny</label>
-                                <select required name="geo_scope" id="geo_scope" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:border-indigo-500 transition text-sm">
-                                    @foreach([
-                                        'local' => 'Lokalny (Miasto / Województwo)',
-                                        'national' => 'Krajowy (Cała Polska)',
-                                        'international' => 'Międzynarodowy'
-                                    ] as $value => $label)
-                                        <option value="{{ $value }}" @selected(old('geo_scope', $campaign->configuration?->geo_scope ?? '') === $value)>
-                                            {{ $label }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
 
                             <div>
                                 <label for="geo_details" class="block text-sm font-semibold text-slate-200 mb-2">Szczegóły lokalizacji (Opcjonalnie)</label>
@@ -185,8 +186,8 @@
 
                         {{-- Input 10: Struktura wyjściowa --}}
                         <div>
-                            <label for="output" class="block text-sm font-semibold text-slate-200 mb-2">Struktura wyjściowa</label>
-                            <textarea name="output" id="output" 
+                            <label for="output_structure" class="block text-sm font-semibold text-slate-200 mb-2">Struktura wyjściowa</label>
+                            <textarea name="output_structure" id="output_structure" 
                                    class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 placeholder-slate-600 focus:outline-none focus:border-indigo-500 transition text-sm"
                                    placeholder="Napisz czego oczekujesz w wyniku działania kampanii..."
                                    required>{{ old('output', $campaign->configuration?->output ?? '') }}</textarea>
