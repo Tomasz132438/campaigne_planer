@@ -55,4 +55,8 @@ class Campaign extends Model
             ? $this->configuration !== null
             : $this->configuration()->exists();
     }
+
+    public function contents() {
+        return $this->hasMany(CampaignContent::class)->orderBy('order');
+    }
 }

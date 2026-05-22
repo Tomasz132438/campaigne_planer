@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     DashboardController,
     LandingPageController,
-    ProfileController
+    ProfileController,
+    CampaignController
 };
 use App\Http\Controllers\Campaign\{
     CreateCampaignController,
@@ -17,6 +18,7 @@ use App\Http\Controllers\Campaign\{
     StoreCampaignController,
     ConfigurationController
 };
+use App\Http\Controllers\Ai\SendPromptController;
 
 Route::get('/', LandingPageController::class)->name('landing');
 
@@ -45,6 +47,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Zagnieżdżone trasy dla konfiguracji - jedna definicja wystarczy
     Route::resource('campaigns.configuration', ConfigurationController::class)
         ->only(['store', 'update']);
+
+    Route::get('/ai', function () {
+        return view('aiResults');
+    });
+
+    Route::post('/ai/send', [App\Http\Controllers\Ai\SendPromptController::class, 'sendPrompt'])->name('send.prompt');
+
+    Route::post('campaigns/{campaign}/generate', \App\Http\Controllers\Ai\SendPromptController::class)->name('campaigns.generate');
+    Route::get('campaigns/{campaign}/results', [CampaignController::class, 'showResults'])->name('campaigns.ai.results');
+
+    Route::middleware(['auth'])->group(function () {
+    // CRUD kampanii (zakładam, że masz już tu swój kontroler do tworzenia/usuwania)
+    Route::resource('campaigns', CampaignController::class)->except(['index', 'show']);
+    
+    // Specyficzne widoki i akcje
+    Route::get('campaigns/{campaign}', [CampaignController::class, 'show'])->name('campaigns.show');
+    Route::get('campaigns/{campaign}/results', [CampaignController::class, 'showResults'])->name('campaigns.ai.results');
+    
+    // Akcja generowania (użyj innej trasy, żeby nie zaśmiecać głównego kontrolera)
+    Route::post('campaigns/{campaign}/generate', \App\Http\Controllers\Ai\SendPromptController::class)
+        ->name('campaigns.generate');
+});
 });
 
 require __DIR__.'/auth.php';

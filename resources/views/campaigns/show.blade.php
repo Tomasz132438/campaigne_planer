@@ -157,12 +157,30 @@
                             <p class="text-sm text-slate-400 mt-1 break-words">{{ $campaign->configuration->exclusions }}</p>
                         </div>
                     @endif
-
-                    {{-- Sekcja 3: Wynik z AI --}}
+                    {{-- Sekcja 3: Akcja AI --}}
                     <div class="border-t border-slate-800 pt-6 mt-6">
-                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block mb-2">Strategia marketingowa wygenerowana przez AI</span>
-                        <div class="p-5 bg-slate-950 border border-slate-800/80 rounded-2xl text-sm text-slate-200 whitespace-pre-line leading-relaxed shadow-inner">
-                            {{ $campaign->configuration->output ?? 'Strategia i makiety są w trakcie generowania przez LLM...' }}
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-sm font-bold text-amber-400 uppercase">Strategia AI</h3>
+                                <p class="text-xs text-slate-500 mt-1">
+                                    {{ $campaign->contents->count() > 0 ? 'Wygenerowano ' . $campaign->contents->count() . ' elementów.' : 'Strategia oczekuje na wygenerowanie.' }}
+                                </p>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <form action="{{ route('campaigns.generate', $campaign) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-sm transition">
+                                        Generuj strategię
+                                    </button>
+                                </form>
+
+                                @if($campaign->contents->count() > 0)
+                                    <a href="{{ route('campaigns.ai.results', $campaign) }}" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition">
+                                        Zobacz wyniki
+                                    </a>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
